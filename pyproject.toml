@@ -52,4 +52,4 @@ omit = ["^(?!tests/|src/|main.py).*"]
 [tool.poetry.scripts]
 pytorch = "main:main"
 coverage = "checks:run_coverage"
-lint = "checks:lint"
+lint = "checks:run_lint"

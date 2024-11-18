@@ -42,10 +42,24 @@ def run_pyright() -> bool:
     )
 
 
+def run_lint() -> None:
+    """Run all linters."""
+    print("Running linters...\n")
+    linters = [run_flake8, run_isort, run_black, run_mypy, run_pyright]
+
+    for linter in linters:
+        if not linter():
+            sys.exit(1)
+
+    print("\nAll linters passed!")
+
+
 def run_coverage() -> None:
     """Run coverage tests and check coverage percentage."""
     print("Running coverage tests...")
-    coverage_run = subprocess.run(["coverage", "run", "-m", "pytest"], capture_output=True, text=True)
+    coverage_run = subprocess.run(
+        ["coverage", "run", "-m", "pytest"], capture_output=True, text=True
+    )
 
     if coverage_run.returncode != 0:
         print("Coverage tests failed:")
@@ -53,7 +67,11 @@ def run_coverage() -> None:
         print(coverage_run.stderr)
         sys.exit(1)
 
-    coverage_report = subprocess.run(["coverage", "report", "--fail-under=90"], capture_output=True, text=True)
+    coverage_report = subprocess.run(
+        ["coverage", "report", "--fail-under=90"],
+        capture_output=True,
+        text=True
+    )
 
     if coverage_report.returncode != 0:
         print("Coverage is below 90%:")
@@ -62,18 +80,3 @@ def run_coverage() -> None:
         sys.exit(1)
 
     print("Coverage passed!")
-
-
-def lint() -> None:
-    print("Running linters...\n")
-    if not run_flake8():
-        exit(1)
-    if not run_isort():
-        exit(1)
-    if not run_black():
-        exit(1)
-    if not run_mypy():
-        exit(1)
-    if not run_pyright():
-        exit(1)
-    print("\nAll linters passed!")
