@@ -5,9 +5,6 @@ __pycache__/
 *.pyd
 *.cpython-*.pyc
 
-# PyCharm files
-.idea/
-
 # Poetry virtual environments
 .venv/
 poetry.lock

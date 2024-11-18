@@ -1,6 +1,6 @@
 import sys
 
-from checks import run_black, run_flake8, run_isort, run_mypy, run_pyright
+from ci.checks import run_black, run_flake8, run_isort, run_mypy, run_pyright
 
 
 def main() -> None:

@@ -17,7 +17,7 @@ def run_command(command: list[str], description: str) -> bool:
 
 def run_flake8() -> bool:
     """Run flake8 for linting."""
-    return run_command(["poetry", "run", "flake8"], "flake8 linting")
+    return run_command(["poetry", "run", "flake8", "--max-line-length=100"], "flake8 linting")
 
 
 def run_black() -> bool:

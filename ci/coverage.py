@@ -1,5 +1,7 @@
+import os
 import subprocess
 import sys
+import webbrowser
 
 
 def run_coverage() -> None:
@@ -42,3 +44,23 @@ def run_coverage() -> None:
         sys.exit(1)
 
     print("Coverage passed!")
+
+
+def generate_coverage_report() -> None:
+    """Generate HTML coverage report."""
+    run_coverage()
+
+    print("Generating HTML coverage report...")
+    try:
+        result = subprocess.run(["coverage", "html"], capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"Error generating HTML report: {result.stderr}")
+            sys.exit(1)
+        print("HTML coverage report generated!")
+        report_path = os.path.abspath("htmlcov/index.html")
+        webbrowser.open(f"file://{report_path}")
+        print(f"Opened coverage report: {report_path}")
+
+    except Exception as e:
+        print(f"Unexpected error generating HTML report: {e}")
+        sys.exit(1)
