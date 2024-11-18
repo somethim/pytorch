@@ -1,0 +1,38 @@
+# Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.cpython-*.pyc
+
+# Poetry virtual environments
+.venv/
+poetry.lock
+
+# Coverage reports
+.coverage
+*.coveragerc
+
+# IDE/Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# pytest cache
+.cache/
+
+# pyright type checking
+pyrightconfig.json
+
+# Mypy cache
+.mypy_cache/
+
+# Temporary files
+*.log
+*.bak
+*.swp

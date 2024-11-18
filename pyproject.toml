@@ -1,0 +1,55 @@
+[tool.poetry]
+name = "pytorch"
+version = "0.1.0"
+description = "Learning project"
+authors = ["Arbi Kullakshi <arbikullakshi0@gmail.com>"]
+license = "LICENSE"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+torch = "^2.5.1"
+numpy = "^2.1.3"
+torchvision = "^0.20.1"
+torchaudio = "^2.5.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.10.0"
+flake8 = "^7.1.1"
+isort = "^5.13.2"
+mypy = "^1.13.0"
+pre-commit = "^4.0.1"
+pyright = "^1.1.389"
+coverage = "^7.6.7"
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+exclude = "^(?!tests/|src/|main.py).*"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+config_file = "mypy.ini"
+files = "main.py, src, tests"
+exclude = "^(?!tests/|src/|main.py).*"
+
+[tool.pyright]
+exclude = ["^(?!tests/|src/|main.py).*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.report]
+show_missing = true
+omit = ["^(?!tests/|src/|main.py).*"]
+
+[tool.poetry.scripts]
+pytorch = "main:main"
+coverage = "checks:run_coverage"
+lint = "checks:lint"
