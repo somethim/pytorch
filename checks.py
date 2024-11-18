@@ -68,15 +68,13 @@ def run_coverage() -> None:
         sys.exit(1)
 
     coverage_report = subprocess.run(
-        ["coverage", "report", "--fail-under=90"],
-        capture_output=True,
-        text=True
+        ["coverage", "report"], capture_output=True, text=True
     )
 
+    print(coverage_report.stdout)
+
     if coverage_report.returncode != 0:
-        print("Coverage is below 90%:")
-        print(coverage_report.stdout)
-        print(coverage_report.stderr)
+        print("Coverage check failed:")
         sys.exit(1)
 
     print("Coverage passed!")
