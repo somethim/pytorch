@@ -52,29 +52,3 @@ def run_lint() -> None:
             sys.exit(1)
 
     print("\nAll linters passed!")
-
-
-def run_coverage() -> None:
-    """Run coverage tests and check coverage percentage."""
-    print("Running coverage tests...")
-    coverage_run = subprocess.run(
-        ["coverage", "run", "-m", "pytest"], capture_output=True, text=True
-    )
-
-    if coverage_run.returncode != 0:
-        print("Coverage tests failed:")
-        print(coverage_run.stdout)
-        print(coverage_run.stderr)
-        sys.exit(1)
-
-    coverage_report = subprocess.run(
-        ["coverage", "report"], capture_output=True, text=True
-    )
-
-    print(coverage_report.stdout)
-
-    if coverage_report.returncode != 0:
-        print("Coverage check failed:")
-        sys.exit(1)
-
-    print("Coverage passed!")
