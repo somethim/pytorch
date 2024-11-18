@@ -3,7 +3,7 @@ repos:
     hooks:
       - id: coverage-check
         name: Run coverage check
-        entry: poetry run python -c "from checks import run_coverage; run_coverage()"
+        entry: poetry run coverage
         language: system
         pass_filenames: false
         stages: [ pre-push ]
@@ -12,7 +12,7 @@ repos:
     hooks:
       - id: lint-check
         name: Run lint check
-        entry: poetry run python -c "from checks import run_lint; run_lint()"
+        entry: poetry run lint
         language: system
         pass_filenames: false
         stages: [ pre-push ]
