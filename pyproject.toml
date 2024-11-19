@@ -1,18 +1,23 @@
 [tool.poetry]
-name = "pytorch"
+name = "pytorch-ml"
 version = "0.1.0"
-description = "Learning project"
+description = "AI Tool with PyTorch training and TensorFlow deployment support"
 authors = ["Arbi Kullakshi <arbikullakshi0@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
-package-mode = false
+packages = [
+    { include = "src" },
+    { include = "ci" },
+    { include = "tests" },
+    { include = "main.py" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.12"
-torch = "^2.5.1"
 numpy = "^2.1.3"
-torchvision = "^0.20.1"
-torchaudio = "^2.5.1"
+torch = { version = "^2.5.1", extras = ["cpu"] }
+torchvision = { version = "^0.20.1", extras = ["cpu"] }
+torchaudio = { version = "^2.5.1", extras = ["cpu"] }
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.10.0"

@@ -1,5 +1,18 @@
 import subprocess
 import sys
+from dataclasses import dataclass
+from typing import List
+
+
+@dataclass
+class LintCommand:
+    description: str
+    check_command: List[str]
+    fix_command: List[str] | None = None
+
+    def should_fix(self, fix_mode: bool) -> List[str]:
+        """Return the appropriate command based on fix mode."""
+        return self.fix_command if (fix_mode and self.fix_command) else self.check_command
 
 
 def run_command(command: list[str], description: str) -> bool:
@@ -15,40 +28,68 @@ def run_command(command: list[str], description: str) -> bool:
     return True
 
 
-def run_flake8() -> bool:
-    """Run flake8 for linting."""
-    return run_command(["poetry", "run", "flake8", "--max-line-length=100"], "flake8 linting")
+def get_linters() -> List[LintCommand]:
+    """Get all linter commands with their fix modes."""
+    return [
+        LintCommand(
+            "flake8 linting",
+            ["poetry", "run", "flake8", "--max-line-length=100"],
+            # flake8 doesn't have a fix mode
+            None,
+        ),
+        LintCommand(
+            "Black formatter",
+            ["poetry", "run", "black", "--check", "."],
+            ["poetry", "run", "black", "."],
+        ),
+        LintCommand(
+            "isort",
+            ["poetry", "run", "isort", "--check-only", "."],
+            ["poetry", "run", "isort", "."],
+        ),
+        LintCommand(
+            "mypy type checking",
+            ["poetry", "run", "mypy", "."],
+            # mypy doesn't have a fix mode
+            None,
+        ),
+        LintCommand(
+            "pyright type checking",
+            ["poetry", "run", "pyright", "."],
+            # pyright doesn't have a fix mode
+            None,
+        ),
+    ]
 
 
-def run_black() -> bool:
-    """Run black formatter."""
-    return run_command(["poetry", "run", "black", "."], "Black formatter")
+def run_lint(fix: bool = False) -> None:
+    """Run all linters.
 
+    Args:
+        fix: If True, will attempt to fix issues where possible
+    """
+    mode = "fixing" if fix else "checking"
+    print(f"Running linters in {mode} mode...\n")
 
-def run_isort() -> bool:
-    """Run isort to sort imports."""
-    return run_command(["poetry", "run", "isort", "."], "isort")
-
-
-def run_mypy() -> bool:
-    """Run mypy type checking."""
-    return run_command(["poetry", "run", "mypy", "."], "mypy type checking")
-
-
-def run_pyright() -> bool:
-    """Run pyright for type checking."""
-    return run_command(
-        ["poetry", "run", "pyright", "."], "pyright type checking"
-    )
-
-
-def run_lint() -> None:
-    """Run all linters."""
-    print("Running linters...\n")
-    linters = [run_flake8, run_isort, run_black, run_mypy, run_pyright]
+    linters = get_linters()
 
     for linter in linters:
-        if not linter():
+        command = linter.should_fix(fix)
+        if not run_command(command, linter.description):
             sys.exit(1)
 
     print("\nAll linters passed!")
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Run linting checks with optional fixing")
+    parser.add_argument(
+        "--fix",
+        action="store_true",
+        help="Attempt to automatically fix issues where possible",
+    )
+
+    args = parser.parse_args()
+    run_lint(fix=args.fix)
