@@ -27,10 +27,6 @@ def get_linters() -> List[LintCommand]:
     """Get all linter commands with fixing enabled where possible."""
     return [
         LintCommand(
-            "flake8 linting",
-            ["poetry", "run", "flake8", "--max-line-length=100"],
-        ),
-        LintCommand(
             "Black formatter",
             ["poetry", "run", "black", "."],  # Always fix
         ),
@@ -45,6 +41,10 @@ def get_linters() -> List[LintCommand]:
         LintCommand(
             "pyright type checking",
             ["poetry", "run", "pyright", "."],
+        ),
+        LintCommand(
+            "flake8 linting",
+            ["poetry", "run", "flake8", "--max-line-length=100"],
         ),
     ]
 

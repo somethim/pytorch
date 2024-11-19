@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "pytorch-ml"
+name = "pytorch"
 version = "0.1.0"
-description = "AI Tool with PyTorch training and TensorFlow deployment support"
+description = "MLA built using PyTorch"
 authors = ["Arbi Kullakshi <arbikullakshi0@gmail.com>"]
 license = "LICENSE"
 readme = "README.md"
@@ -28,6 +28,7 @@ pre-commit = "^4.0.1"
 pyright = "^1.1.389"
 coverage = "^7.6.7"
 pytest = "^8.3.3"
+pytest-cov = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -40,23 +41,41 @@ exclude = "^(?!tests/|src/|main.py).*"
 profile = "black"
 
 [tool.mypy]
-config_file = "mypy.ini"
+config_file = "ci/mypy.ini"
 files = "main.py, src, tests"
 exclude = "^(?!tests/|src/|main.py).*"
 
 [tool.pyright]
 exclude = ["^(?!tests/|src/|main.py).*"]
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
+[tool.coverage.run]
+source = ["src", "main.py"]
+omit = ["tests/*", "ci/*"]
+relative_files = true
+branch = true
 
 [tool.coverage.report]
 show_missing = true
 fail_under = 90
-omit = ["^(?!tests/|src/|main.py).*"]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+
+[tool.coverage.html]
+directory = "ci/htmlcov"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
 
 [tool.poetry.scripts]
 pytorch = "main:main"
 lint = "ci.checks:run_lint"
-coverage = "ci.coverage:run_coverage"
-coverage-report = "ci.coverage:generate_coverage_report"
+coverage = "ci.coverage:generate_coverage_report"
