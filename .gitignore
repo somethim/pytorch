@@ -3,36 +3,46 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-*.cpython-*.pyc
+.Python
+*.so
 
-# Poetry virtual environments
-.venv/
-poetry.lock
+# Distribution/packaging
+dist/
+build/
+*.egg-info/
 
 # Coverage reports
+htmlcov/
 .coverage
-*.coveragerc
+coverage.xml
+.pytest_cache/
 
-# IDE/Editor specific files
+# Poetry
+poetry.lock
+.venv/
+
+# IDE/Editor
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
 
-# OS-specific files
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
 .DS_Store
 Thumbs.db
 
-# pytest cache
-.cache/
-
-# pyright type checking
+# Type checking
+.mypy_cache/
+.dmypy.json
 pyrightconfig.json
 
-# Mypy cache
-.mypy_cache/
-
-# Temporary files
+# Logs and temporary files
 *.log
+*.tmp
 *.bak
 *.swp
