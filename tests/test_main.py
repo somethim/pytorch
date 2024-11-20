@@ -1,9 +1,13 @@
+from unittest.mock import patch
+
 import main
 from src.pytorch.core import some_function
 
 
-def test_main_import() -> None:
-    assert main is not None
+def test_main():
+    with patch("ci.checks.run_lint") as mock_run_lint:
+        main.main()
+        mock_run_lint.assert_called_once()
 
 
 def test_some_function() -> None:
